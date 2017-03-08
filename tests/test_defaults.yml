@@ -1,0 +1,5 @@
+---
+- name: Testing the idempotence with the default vars
+  hosts: localhost
+  roles:
+    - route53
