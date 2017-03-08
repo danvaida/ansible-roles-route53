@@ -3,6 +3,7 @@ galaxy_info:
   author: Dan Vaida
   description: Creates, updates and deletes DNS records in Route53.
   company: S.C. Arch Admin S.R.L.
+  license: BSD
   min_ansible_version: 2.2
   platforms:
     - name: GenericUnix
