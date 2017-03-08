@@ -1,0 +1,41 @@
+---
+- name: Record(s) should be added/updated
+  route53:
+    aws_access_key: "{{ item.access_key | default(omit) }}"
+    aws_secret_key: "{{ item.secret_key | default(omit) }}"
+    profile: "{{ item.boto_profile | default(omit) }}"
+    zone: "{{ item.zone }}"
+    record: "{{ item.record }}"
+    type: "{{ item.type }}"
+    ttl: "{{ item.ttl | default(omit) }}"
+    value: "{{ item.value }}"
+    command: create
+    wait: True
+    alias: "{{ item.alias | default(omit) }}"
+    alias_hosted_zone_id: "{{ item.alias_hosted_zone_id | default(omit) }}"
+    overwrite: "{{ item.overwrite | default('True') }}"
+    private_zone: "{{ item.private_zone | default(omit) }}"
+  with_items: "{{ route53_records_to_add }}"
+  tags:
+    - route53
+    - dns_records
+
+- name: Record(s) should be removed
+  route53:
+    aws_access_key: "{{ item.access_key | default(omit) }}"
+    aws_secret_key: "{{ item.secret_key | default(omit) }}"
+    profile: "{{ item.boto_profile | default(omit) }}"
+    zone: "{{ item.zone }}"
+    record: "{{ item.record }}"
+    type: "{{ item.type }}"
+    ttl: "{{ item.ttl | default(omit) }}"
+    value: "{{ item.value }}"
+    alias: "{{ item.alias | default(omit) }}"
+    alias_hosted_zone_id: "{{ item.alias_hosted_zone_id | default(omit) }}"
+    command: delete
+    wait: True
+    private_zone: "{{ item.private_zone | default(omit) }}"
+  with_items: "{{ route53_records_to_remove }}"
+  tags:
+    - route53
+    - dns_records

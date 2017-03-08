@@ -1,0 +1,22 @@
+---
+- name: Testing the idempotence of removal
+  hosts: localhost
+  pre_tasks:
+    - route53_zone:
+        zone: 'arch-admin.com'
+        state: present
+      register: zone_details
+
+  roles:
+    - route53
+
+  tasks:
+    - pause:
+        minutes: 2
+
+    - name: DNS records should be removed
+      assert:
+        that:
+          - "'NXDOMAIN' == '{{ lookup('dig', 'chewy.arch-admin.com.', '@8.8.4.4') }}'"
+          - "'NXDOMAIN' == '{{ lookup('dig', 'lottie.arch-admin.com.', '@8.8.4.4') }}'"
+          - "'NXDOMAIN' == '{{ lookup('dig', 'lara.arch-admin.com.', '@8.8.4.4') }}'"
