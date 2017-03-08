@@ -33,7 +33,7 @@
         - zone: 'arch-admin.com'
           record: 'lottie.arch-admin.com'
           type: CNAME
-          ttl: 300
+          ttl: 10
           value: 'chewy.arch-admin.com'
 
         - zone: 'arch-admin.com'

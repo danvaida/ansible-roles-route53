@@ -3,12 +3,12 @@ route53_records_to_add:
   - zone: 'arch-admin.com'
     record: 'chewy.arch-admin.com.'
     type: A
-    ttl: 600
+    ttl: 10
     value: '1.1.1.1'
 
   - zone: 'dummy.com'
     private_zone: True
     record: 'ansible-route53-role-test.dummy.com.'
     type: A
-    ttl: 300
+    ttl: 10
     value: '2.2.2.2'
