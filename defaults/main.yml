@@ -1,3 +1,5 @@
 ---
 route53_records_to_add:    []
 route53_records_to_remove: []
+route53_zones_to_add:      []
+route53_zones_to_remove:   []

@@ -16,6 +16,12 @@ Creates, updates and deletes DNS records in Route53.
 * __route53_records_to_remove:__
   List of DNS zone records to remove.
 
+* __route53_zones_to_add:__
+  List of DNS zones to add.
+
+* __route53_zones_to_remove:__
+  List of DNS zones to remove.
+
 ## Dependencies
 
 None.
@@ -28,41 +34,55 @@ None.
       become: False
       roles:
         - role: route53
+          route53_zones_to_add:
+            - zone: 'zone.xxx'
+              comment: 'some comment'
+              vpc_id: vpc-12345678
+              vpc_region: 'eu-central-1'
+
           route53_records_to_add:
             - zone: 'zone.xxx'
               private_zone: True
-              record: 'in.the.zone.xxx'
-              type: A
-              ttl: 600
-              value: '1.1.1.1'
-            - zone: 'zone.xxx'
-              record: 'by.the.zone.xxx'
-              type: CNAME
-              ttl: 300
-              value: 'in.the.zone.xxx'
-            - zone: 'zone.xxx'
-              record: 'to.the.zone.xxx'
-              type: A
-              value: 'in.the.zone.xxx.'
-              alias: True
-              alias_hosted_zone_id: 'ABCD1234567890'
+              comment: 'zone comment'
+              records:
+                - record: 'in.the.zone.xxx'
+                  type: A
+                  ttl: 600
+                  value: '1.1.1.1'
+
+                - record: 'by.the.zone.xxx'
+                  type: CNAME
+                  ttl: 300
+                  value: 'in.the.zone.xxx'
+
+                - record: 'to.the.zone.xxx'
+                  type: A
+                  value: 'in.the.zone.xxx.'
+                  alias: True
+                  alias_hosted_zone_id: 'ABCD1234567890'
+
           route53_records_to_remove:
             - zone: 'zone.xxx'
-              record: 'in.the.zone.xxx'
-              type: A
-              ttl: 600
-              value: '1.1.1.1'
+              private_zone: True
+              records:
+                - record: 'in.the.zone.xxx'
+                  type: A
+                  ttl: 600
+                  value: '1.1.1.1'
+
+                - record: 'by.the.zone.xxx'
+                  type: CNAME
+                  ttl: 300
+                  value: 'in.the.zone.xxx'
+
+                - record: 'to.the.zone.xxx'
+                  type: A
+                  value: 'in.the.zone.xxx'
+                  alias: True
+                  alias_hosted_zone_id: 'ABCD1234567890'
+
+          route53_zones_to_remove:
             - zone: 'zone.xxx'
-              record: 'by.the.zone.xxx'
-              type: CNAME
-              ttl: 300
-              value: 'in.the.zone.xxx'
-            - zone: 'zone.xxx'
-              record: 'to.the.zone.xxx'
-              type: A
-              value: 'in.the.zone.xxx'
-              alias: True
-              alias_hosted_zone_id: 'ABCD1234567890'
 
 ## Testing
 
@@ -75,9 +95,10 @@ following commands:
       -v $PWD:/etc/ansible/roles/route53 \
       --env AWS_ACCESS_KEY=$AWS_ACCESS_KEY \
       --env AWS_SECRET_KEY=$AWS_SECRET_KEY \
+      --env AWS_REGION=$AWS_REGION \
       --workdir /etc/ansible/roles/route53/tests \
       ansible-roles-test
 
 # To do
 
-* Add integration tests for private zone records
+* Add integration tests for private zones

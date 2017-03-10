@@ -1,0 +1,11 @@
+---
+- name: Route53 facts should be collected
+  route53_facts:
+    query: hosted_zone
+  register: route53
+
+- name: Required Zone ID should be set as fact
+  set_fact:
+    zone_id: "{{ item.Id | replace('/hostedzone/', '') }}"
+  with_items: "{{ route53.HostedZones }}"
+  when: item.Name == 'arch-admin.com.'

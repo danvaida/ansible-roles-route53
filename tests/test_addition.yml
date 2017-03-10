@@ -2,50 +2,35 @@
 - name: Testing the idempotence of addition
   hosts: localhost
   vars_files: [ './vars/addition.yml' ]
+  pre_tasks:
+    - include: get_vpc_id.yml
+
   roles:
     - route53
 
 - hosts: localhost
   pre_tasks:
-    - route53:
-        command: get
-        zone: 'arch-admin.com'
-        record: 'chewy.arch-admin.com'
-        type: A
-      register: first_record_details
-
-    - route53:
-        command: get
-        zone: 'dummy.com'
-        private_zone: True
-        record: 'ansible-route53-role-test.dummy.com'
-        type: A
-      register: second_record_details
-
-    - route53_zone:
-        zone: 'arch-admin.com'
-        state: present
-      register: zone_details
+    - include: get_zone_id.yml
 
   roles:
     - role: route53
       route53_records_to_add:
         - zone: 'arch-admin.com'
-          record: 'lottie.arch-admin.com'
-          type: CNAME
-          ttl: 10
-          value: 'chewy.arch-admin.com'
+          records:
+            - record: 'lottie.arch-admin.com'
+              type: CNAME
+              ttl: 10
+              value: 'chewy.arch-admin.com'
 
-        - zone: 'arch-admin.com'
-          record: 'lara.arch-admin.com'
-          type: A
-          value: 'chewy.arch-admin.com.'
-          alias: True
-          alias_hosted_zone_id: "{{ zone_details.set.zone_id }}"
+            - record: 'lara.arch-admin.com'
+              type: A
+              value: 'chewy.arch-admin.com.'
+              alias: True
+              alias_hosted_zone_id: "{{ zone_id }}"
 
   post_tasks:
     - pause:
-        minutes: 2
+        minutes: 1
 
     - name: DNS records should be added and have the right values
       assert:
@@ -53,3 +38,4 @@
           - "'1.1.1.1' == '{{ lookup('dig', 'chewy.arch-admin.com.', '@8.8.4.4') }}'"
           - "'chewy.arch-admin.com.' == '{{ lookup('dig', 'lottie.arch-admin.com./CNAME', '@8.8.4.4') }}'"
           - "'1.1.1.1' == '{{ lookup('dig', 'lara.arch-admin.com.', '@8.8.8.8') }}'"
+          - "'3.3.3.3' == '{{ lookup('dig', 'minnie.arch-admin.com.', '@8.8.4.4') }}'"
