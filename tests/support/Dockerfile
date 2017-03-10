@@ -11,6 +11,7 @@ RUN apt-get -y install python-ndg-httpsclient=0.3.2-1~bpo70+1 \
                        python-pyasn1=0.1.3-1 \
                        python-urllib3=1.3-3
 
-RUN pip install dnspython==1.15.0
+RUN pip install dnspython==1.15.0 \
+                boto3==1.4.4
 
 CMD ["./support/run-tests.sh"]
