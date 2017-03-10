@@ -1,0 +1,12 @@
+---
+- name: VPC facts should be collected
+  ec2_vpc_net_facts:
+  register: _vpc_facts
+
+- name: Required VPC ID should be set as fact
+  set_fact:
+    vpc_id: "{{ item.id }}"
+  with_items: "{{ _vpc_facts.vpcs }}"
+  when:
+    - item.cidr_block == '172.31.0.0/16'
+    - item.is_default

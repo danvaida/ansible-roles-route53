@@ -14,6 +14,8 @@ route53_records_to_add:
 
   - zone: 'dummy.com'
     private_zone: True
+    vpc_id: "{{ vpc_id }}"
+    vpc_region: "{{ lookup('ENV', 'AWS_REGION') }}"
     comment: 'Zone comment goes here.'
     records:
       - record: 'ansible-route53-role-test.dummy.com.'

@@ -2,6 +2,9 @@
 - name: Testing the idempotence of addition
   hosts: localhost
   vars_files: [ './vars/addition.yml' ]
+  pre_tasks:
+    - include: get_vpc_id.yml
+
   roles:
     - route53
 

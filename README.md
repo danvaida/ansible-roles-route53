@@ -95,6 +95,7 @@ following commands:
       -v $PWD:/etc/ansible/roles/route53 \
       --env AWS_ACCESS_KEY=$AWS_ACCESS_KEY \
       --env AWS_SECRET_KEY=$AWS_SECRET_KEY \
+      --env AWS_REGION=$AWS_REGION \
       --workdir /etc/ansible/roles/route53/tests \
       ansible-roles-test
 
