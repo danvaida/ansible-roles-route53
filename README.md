@@ -1,8 +1,9 @@
 [![Build Status](https://travis-ci.org/danvaida/ansible-roles-route53.svg?branch=master)](https://travis-ci.org/danvaida/ansible-roles-route53)
+[![Galaxy](https://img.shields.io/ansible/role/16135.svg)](https://galaxy.ansible.com/danvaida/route53/)
 
 # Ansible Route53 role
 
-Creates, updates and deletes DNS records in Route53.
+Creates, updates and deletes DNS zones and records in Route53.
 
 ## Requirements
 
