@@ -8,14 +8,8 @@ sudo: required
 services:
   - docker
 
-env:
-  - distro: wheezy
-
-install:
-  - sudo pip install ansible==2.2
-
 before_script:
-  - docker build --no-cache -t ansible-roles-test-${distro} tests/support
+  - docker build --no-cache -t ansible-roles-test tests/support
 
 script:
   - >
@@ -25,7 +19,7 @@ script:
     --env AWS_SECRET_KEY=$AWS_SECRET_KEY
     --env AWS_REGION=$AWS_REGION
     --workdir /etc/ansible/roles/route53/tests
-    ansible-roles-test-${distro}
+    ansible-roles-test
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
