@@ -3,6 +3,7 @@
   hosts: localhost
   vars_files: [ './vars/removal.yml' ]
   pre_tasks:
+    - include: get_vpc_id.yml
     - include: get_zone_id.yml
 
   roles:

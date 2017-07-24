@@ -1,6 +1,16 @@
 ---
 route53_records_to_add:
   - zone: 'arch-admin.com'
+    private_zone: True
+    vpc_id: "{{ vpc_id }}"
+    vpc_region: "{{ lookup('ENV', 'AWS_REGION') }}"
+    records:
+      - record: 'shadow.arch-admin.com.'
+        type: A
+        ttl: 10
+        value: '4.4.4.4'
+
+  - zone: 'arch-admin.com'
     records:
       - record: 'chewy.arch-admin.com.'
         type: A
