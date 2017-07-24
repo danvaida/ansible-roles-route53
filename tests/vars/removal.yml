@@ -33,3 +33,7 @@ route53_records_to_remove:
 
 route53_zones_to_remove:
   - zone: 'dummy.com'
+    vpc_id: "{{ vpc_id }}"
+    vpc_region: "{{ lookup('ENV', 'AWS_REGION') }}"
+
+  - zone: 'dummy.com'

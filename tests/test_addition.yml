@@ -22,9 +22,12 @@
               ttl: 10
               value: 'chewy.arch-admin.com'
 
+        - zone: 'arch-admin.com'
+          private_zone: True
+          records:
             - record: 'lara.arch-admin.com'
               type: A
-              value: 'chewy.arch-admin.com.'
+              value: 'shadow.arch-admin.com.'
               alias: True
               alias_hosted_zone_id: "{{ zone_id }}"
 
@@ -37,5 +40,4 @@
         that:
           - "'1.1.1.1' == '{{ lookup('dig', 'chewy.arch-admin.com.', '@8.8.4.4') }}'"
           - "'chewy.arch-admin.com.' == '{{ lookup('dig', 'lottie.arch-admin.com./CNAME', '@8.8.4.4') }}'"
-          - "'1.1.1.1' == '{{ lookup('dig', 'lara.arch-admin.com.', '@8.8.8.8') }}'"
           - "'3.3.3.3' == '{{ lookup('dig', 'minnie.arch-admin.com.', '@8.8.4.4') }}'"
